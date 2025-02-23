@@ -43,24 +43,40 @@ jobs:
       # Build the frontend Docker image
       - name: Build frontend Docker image
         run: |
-          docker build -t auth-frontend ./client  # Build Docker image for the React frontend
+          docker build -t auth-frontend:${{ github.ref }} ./client  # Tag image with Git tag (e.g., 'v1.0')
 
       # Build the backend Docker image
       - name: Build backend Docker image
         run: |
-          docker build -t auth-backend ./server  # Build Docker image for the Node.js backend
+          docker build -t auth-backend:${{ github.ref }} ./server  # Tag image with Git tag (e.g., 'v1.0')
 
       # Step 7: Log in to Docker Hub and push both images
+
+      # Docker login (using a more secure way with --password-stdin)
+      - name: Log in to Docker Hub
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       # Push frontend Docker image
       - name: Push frontend Docker image
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}  # Docker login
-          docker push auth-frontend  # Push the frontend image to Docker Hub
+          docker push auth-frontend:${{ github.ref }}  # Push the frontend image to Docker Hub
 
       # Push backend Docker image
       - name: Push backend Docker image
         run: |
-          docker push auth-backend  # Push the backend image to Docker Hub
+          docker push auth-backend:${{ github.ref }}  # Push the backend image to Docker Hub
 
-
+      # Step 8: Save images as artifacts (optional, if you want to download them later)
+      - name: Save Docker images as artifacts
+        run: |
+          docker save -o auth-frontend-${{ github.ref }}.tar auth-frontend:${{ github.ref }}
+          docker save -o auth-backend-${{ github.ref }}.tar auth-backend:${{ github.ref }}
+          
+      - name: Upload Docker images as artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-images
+          path: |
+            auth-frontend-${{ github.ref }}.tar
+            auth-backend-${{ github.ref }}.tar
