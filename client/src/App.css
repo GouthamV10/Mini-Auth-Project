@@ -1,0 +1,161 @@
+/* Root container */
+body{
+  margin: 0px;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  margin: 0px;
+  height: 100vh;
+  background: linear-gradient(to right, #667eea, #764ba2);
+}
+
+/* Authentication box */
+.auth-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Form container */
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adds space between inputs and buttons */
+}
+
+.form-box-inside {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adds space between inputs and buttons */
+}
+
+/* Input fields */
+.auth-input {
+  width: calc(100% - 24px); /* Ensures same width as button */
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  margin: 0 auto; /* Centers the input */
+}
+
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-input:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Buttons */
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.auth-button:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Switch between Login & Signup */
+.auth-switch {
+  background: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+  margin-top: 10px;
+  border: none;
+}
+
+.auth-switch:hover {
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-box {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Input fields */
+.auth-input {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-sizing: border-box; /* Ensures padding doesn’t increase width */
+}
+
+/* Buttons */
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Password wrapper fix */
+.password-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.auth-input {
+  width: 100%;
+  padding-right: 40px; /* Space for the toggle icon */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: white;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
