@@ -84,3 +84,9 @@ jobs:
       - name: Push backend Docker image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/auth-backend:$TAG  # Full image path with username
+
+      # Step 10: Output image names
+      - name: Output Docker image names
+        run: |
+          echo "Frontend Image pushed: ${{ secrets.DOCKER_USERNAME }}/auth-frontend:$TAG"
+          echo "Backend Image pushed: ${{ secrets.DOCKER_USERNAME }}/auth-backend:$TAG"
