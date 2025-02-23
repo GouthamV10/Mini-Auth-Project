@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { BASE_URI, LOGIN_PATH, SIGNUP_PATH } from "../constants.ts";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
 	const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -14,6 +15,7 @@ export default function Auth() {
 		password: "",
 	});
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const navigate = useNavigate();
 
 	const handleSignUpChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSignUpForm((prev) => ({
@@ -62,6 +64,7 @@ export default function Auth() {
 
 			const data = await response.json();
 			console.log("Signup successful:", data);
+			navigate("/home");
 		} catch (error) {
 			console.error("Error during signup:", error);
 		}
@@ -95,6 +98,7 @@ export default function Auth() {
 
 			const data = await response.json();
 			console.log("Login successful:", data);
+			navigate("/home");
 		} catch (error) {
 			console.error("Error during login:", error);
 		}
@@ -102,6 +106,7 @@ export default function Auth() {
 
 	return (
 		<div className="auth-box">
+			<h3>LOG IN / SIGN UP</h3>
 			{isSignUp ? (
 				<div className="form-box">
 					<form className="form-box-inside" onSubmit={handleSignup}>
