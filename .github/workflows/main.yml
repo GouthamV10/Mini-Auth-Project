@@ -40,16 +40,20 @@ jobs:
 
       # Step 6: Build Docker images for both frontend and backend
 
+      # Set the tag from the Git tag name (without refs/tags/)
+      - name: Set Docker Tag
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}  # Remove 'refs/tags/' from the tag name
+          echo "TAG=$TAG" >> $GITHUB_ENV  # Set it as an environment variable
+
       # Build the frontend Docker image
       - name: Build frontend Docker image
         run: |
-          TAG=${GITHUB_REF#refs/tags/}  # Remove the 'refs/tags/' part
           docker build -t auth-frontend:$TAG ./client  # Tag image with Git tag (e.g., 'v1.0')
 
       # Build the backend Docker image
       - name: Build backend Docker image
         run: |
-          TAG=${GITHUB_REF#refs/tags/}  # Remove the 'refs/tags/' part
           docker build -t auth-backend:$TAG ./server  # Tag image with Git tag (e.g., 'v1.0')
 
       # Step 7: Log in to Docker Hub and push both images
