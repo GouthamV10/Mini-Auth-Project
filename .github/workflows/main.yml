@@ -68,18 +68,3 @@ jobs:
       - name: Push backend Docker image
         run: |
           docker push auth-backend:$TAG  # Push the backend image to Docker Hub
-
-      # Step 8: Save images as artifacts (optional, if you want to download them later)
-      - name: Save Docker images as artifacts
-        run: |
-          docker save -o auth-frontend-${TAG}.tar auth-frontend:$TAG
-          docker save -o auth-backend-${TAG}.tar auth-backend:$TAG
-          
-      # Step 9: Upload Docker images as artifacts
-      - name: Upload Docker images as artifacts
-        uses: actions/upload-artifact@v3  # Use v3 instead of 'latest'
-        with:
-          name: docker-images
-          path: |
-            auth-frontend-${TAG}.tar
-            auth-backend-${TAG}.tar
