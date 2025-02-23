@@ -47,6 +47,7 @@ app.post("/signup", async (req, res) => {
 		await newUser.save();
 		res.status(201).json({ message: "User registered successfully" });
 	} catch (e) {
+		console.log(e);
 		res.status(500).json({ error: "Error registering user" });
 	}
 });
@@ -71,6 +72,7 @@ app.post("/login", async (req, res) => {
 		}
 		res.json({ message: "Logged in Successfull" });
 	} catch (e) {
+		console.log(e);
 		res.status(500).json({ error: "Error in logging in" });
 	}
 });
