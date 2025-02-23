@@ -1,0 +1,66 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on push to tags that start with 'v', e.g., 'v1.0', 'v2.0.1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner to execute the steps
+
+    steps:
+      # Step 1: Checkout code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js for both client and server
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '23'  # Change this to the version you're using
+
+      # Step 3: Install frontend dependencies (React app)
+      - name: Install frontend dependencies
+        working-directory: ./client   # This points to the client directory
+        run: |
+          npm install
+
+      # Step 4: Install backend dependencies (Node.js app)
+      - name: Install backend dependencies
+        working-directory: ./server   # This points to the server directory
+        run: |
+          npm install
+
+      # Step 5: Build frontend (React app)
+      - name: Build frontend
+        working-directory: ./client
+        run: |
+          npm run build  # Create a production build (in the dist folder)
+
+      # Step 6: Build Docker images for both frontend and backend
+
+      # Build the frontend Docker image
+      - name: Build frontend Docker image
+        run: |
+          docker build -t auth-frontend ./client  # Build Docker image for the React frontend
+
+      # Build the backend Docker image
+      - name: Build backend Docker image
+        run: |
+          docker build -t auth-backend ./server  # Build Docker image for the Node.js backend
+
+      # Step 7: Log in to Docker Hub and push both images
+
+      # Push frontend Docker image
+      - name: Push frontend Docker image
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}  # Docker login
+          docker push auth-frontend  # Push the frontend image to Docker Hub
+
+      # Push backend Docker image
+      - name: Push backend Docker image
+        run: |
+          docker push auth-backend  # Push the backend image to Docker Hub
+
+
