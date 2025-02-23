@@ -70,14 +70,4 @@ jobs:
       # Step 8: Save images as artifacts (optional, if you want to download them later)
       - name: Save Docker images as artifacts
         run: |
-          docker save -o auth-frontend-${{ github.ref }}.tar auth-frontend:${{ github.ref }}
-          docker save -o auth-backend-${{ github.ref }}.tar auth-backend:${{ github.ref }}
-          
-      # Step 9: Upload Docker images as artifacts (updated to v3)
-      - name: Upload Docker images as artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: docker-images
-          path: |
-            auth-frontend-${{ github.ref }}.tar
-            auth-backend-${{ github.ref }}.tar
+          docker sav
