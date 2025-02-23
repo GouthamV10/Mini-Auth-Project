@@ -43,12 +43,14 @@ jobs:
       # Build the frontend Docker image
       - name: Build frontend Docker image
         run: |
-          docker build -t auth-frontend:${{ github.ref }} ./client  # Tag image with Git tag (e.g., 'v1.0')
+          TAG=${GITHUB_REF#refs/tags/}  # Remove the 'refs/tags/' part
+          docker build -t auth-frontend:$TAG ./client  # Tag image with Git tag (e.g., 'v1.0')
 
       # Build the backend Docker image
       - name: Build backend Docker image
         run: |
-          docker build -t auth-backend:${{ github.ref }} ./server  # Tag image with Git tag (e.g., 'v1.0')
+          TAG=${GITHUB_REF#refs/tags/}  # Remove the 'refs/tags/' part
+          docker build -t auth-backend:$TAG ./server  # Tag image with Git tag (e.g., 'v1.0')
 
       # Step 7: Log in to Docker Hub and push both images
 
@@ -60,14 +62,24 @@ jobs:
       # Push frontend Docker image
       - name: Push frontend Docker image
         run: |
-          docker push auth-frontend:${{ github.ref }}  # Push the frontend image to Docker Hub
+          docker push auth-frontend:$TAG  # Push the frontend image to Docker Hub
 
       # Push backend Docker image
       - name: Push backend Docker image
         run: |
-          docker push auth-backend:${{ github.ref }}  # Push the backend image to Docker Hub
+          docker push auth-backend:$TAG  # Push the backend image to Docker Hub
 
       # Step 8: Save images as artifacts (optional, if you want to download them later)
       - name: Save Docker images as artifacts
         run: |
-          docker sav
+          docker save -o auth-frontend-${TAG}.tar auth-frontend:$TAG
+          docker save -o auth-backend-${TAG}.tar auth-backend:$TAG
+          
+      # Step 9: Upload Docker images as artifacts
+      - name: Upload Docker images as artifacts
+        uses: actions/upload-artifact@latest
+        with:
+          name: docker-images
+          path: |
+            auth-frontend-${TAG}.tar
+            auth-backend-${TAG}.tar
